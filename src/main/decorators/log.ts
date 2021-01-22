@@ -9,7 +9,7 @@ export class LogControllerDecorator implements Controller {
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    await this._controller.handle(httpRequest)
-    return null as any
+    const httpResponse = await this._controller.handle(httpRequest)
+    return httpResponse
   }
 }
