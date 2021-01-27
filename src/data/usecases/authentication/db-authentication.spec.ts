@@ -19,7 +19,7 @@ const makeFakeAuthentication = (): AuthenticationModel => ({
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-    async load (email: string): Promise<AccountModel> {
+    async load (_email: string): Promise<AccountModel> {
       return new Promise(resolve => resolve(makeFakeAccount()))
     }
   }
@@ -29,7 +29,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 const makeHashComparer = (): HashComparer => {
   class HashComparerStub implements HashComparer {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-    async compare (value: string, hash: string): Promise<boolean> {
+    async compare (_value: string, _hash: string): Promise<boolean> {
       return new Promise(resolve => resolve(true))
     }
   }
@@ -81,5 +81,13 @@ describe('DbAuthentication UseCase', () => {
     const compareSpy = jest.spyOn(hashComparerStub, 'compare')
     await sut.auth(makeFakeAuthentication())
     expect(compareSpy).toHaveBeenCalledWith('any_password', 'hashed_password')
+  })
+
+  test('Should throw if HashCompare throws', async () => {
+    const { sut, hashComparerStub } = makeSut()
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
+    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.auth(makeFakeAuthentication())
+    await expect(promise).rejects.toThrow()
   })
 })
