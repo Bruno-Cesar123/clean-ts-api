@@ -1,13 +1,7 @@
 import { Validation } from '../../protocols/validation'
 
 export class ValidationComposite implements Validation {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-  private readonly validations: Validation[]
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-  constructor (validations: Validation[]) {
-    this.validations = validations
-  }
+  constructor (private readonly validations: Validation[]) {}
 
   validate (input: any): Error | any {
     for (const validation of this.validations) {

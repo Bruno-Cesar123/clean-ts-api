@@ -2,15 +2,10 @@ import { badRequest, ok, serverError, unauthorized } from '../../helpers/http/ht
 import { Authentication, Controller, HttpRequest, HttpResponse, Validation } from './login-controller-protocols'
 
 export class LoginController implements Controller {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-  private readonly validation: Validation
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
-  private readonly authentication: Authentication
-
-  constructor (authentication: Authentication, validation: Validation) {
-    this.validation = validation
-    this.authentication = authentication
-  }
+  constructor (
+    private readonly authentication: Authentication,
+    private readonly validation: Validation
+  ) {}
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars-experimental
   async handle (httpRequest: HttpRequest): Promise<HttpResponse | any> {
